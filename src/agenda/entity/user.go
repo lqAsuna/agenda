@@ -1,4 +1,9 @@
 package entity
-type User struct {
 
+//User .
+type User struct {
+	Name     string
+	Password string
+	Email    string
+	Phone    string
 }

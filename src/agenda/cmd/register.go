@@ -31,15 +31,15 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		username, _ := cmd.Flags().GetString("user")
-		fmt.Println("register called by " + username)
+		username, _ := cmd.Flags().GetStringArray("user")
+		fmt.Printf("register called by %v", username)
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(registerCmd)
 
-	registerCmd.Flags().StringP("user", "u", "Anonymous", "Help message for username")
+	registerCmd.Flags().StringArrayP("user", "u", nil, "us")
 
 	// Here you will define your flags and configuration settings.
 

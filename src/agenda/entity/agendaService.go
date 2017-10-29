@@ -1,10 +1,35 @@
 package entity
 
-import "container/list"
+import (
+	"container/list"
+	"sync"
+)
 
 //AgendaService .
 type AgendaService struct {
 	storage *Storage
+}
+
+var agendaInstance *AgendaService
+var agendamu sync.Mutex
+
+//GetAgendaService .
+func GetAgendaService() *AgendaService {
+	if agendaInstance == nil {
+		agendamu.Lock()
+		defer agendamu.Unlock()
+		if agendaInstance == nil {
+			sto := GetStorage()
+			agendaInstance = &AgendaService{}
+			agendaInstance.storage = sto
+		}
+	}
+	return agendaInstance
+}
+
+//GetAgendaServiceStorage .
+func (agendaS *AgendaService) GetAgendaServiceStorage() *Storage {
+	return agendaS.storage
 }
 
 func (agendaS *AgendaService) createMeeting(meeting Meeting) bool {
@@ -45,17 +70,34 @@ func (agendaS *AgendaService) createMeeting(meeting Meeting) bool {
 	return true
 }
 
-//AddMeetingParticipator .
-func (agendaS *AgendaService) AddMeetingParticipator(user, title, ptor string) {
-	mt := agendaS.QueryMeetingByTitle(user, title)
-	mt.AddParticipators(ptor)
+//AddMeetingParticipators .
+func (agendaS *AgendaService) AddMeetingParticipators(user, title string, ptors []string) {
+	mt := agendaS.QueryMyMeetingByTitle(user, title)
+	for _, p := range ptors {
+		mt.AddParticipators(p)
+	}
 	agendaS.storage.UpdateMeetingByTitle(title, mt)
 }
 
-//DeelteMeetingParticipator .
-func (agendaS *AgendaService) DeelteMeetingParticipator(user, title, ptor string) {
-	mt := agendaS.QueryMeetingByTitle(user, title)
-	mt.DeleteParticipator(ptor)
+//DeelteMeetingParticipators .
+func (agendaS *AgendaService) DeelteMeetingParticipators(user, title string, ptors []string) {
+	mt := agendaS.QueryMyMeetingByTitle(user, title)
+	for _, p := range ptors {
+		mt.DeleteParticipator(p)
+	}
+	agendaS.storage.UpdateMeetingByTitle(title, mt)
+
+}
+
+//Quit .
+func (agendaS *AgendaService) Quit(user, title string) {
+	mt := agendaS.QueryAllMeetingByTitle(user, title)
+	if mt.Sponsor == user {
+		mt.Sponsor = ""
+	} else {
+		mt.DeleteParticipator(user)
+	}
+
 	agendaS.storage.UpdateMeetingByTitle(title, mt)
 
 }
@@ -69,10 +111,19 @@ func (agendaS *AgendaService) QueryMeetingByUserAndTime(meeting Meeting) *list.L
 	return agendaS.storage.QueryMeeting(timeAndUserFilter)
 }
 
-//QueryMeetingByTitle .
-func (agendaS *AgendaService) QueryMeetingByTitle(user, title string) Meeting {
+//QueryMyMeetingByTitle .
+func (agendaS *AgendaService) QueryMyMeetingByTitle(user, title string) Meeting {
 	titleFilter := func(mt Meeting) bool {
 		return user == mt.GetSponsor() && title == mt.GetTitle()
+	}
+	//可能nil
+	return agendaS.storage.QueryMeeting(titleFilter).Front().Value.(Meeting)
+}
+
+//QueryAllMeetingByTitle .
+func (agendaS *AgendaService) QueryAllMeetingByTitle(user, title string) Meeting {
+	titleFilter := func(mt Meeting) bool {
+		return mt.ContainParticipator(user) && title == mt.GetTitle()
 	}
 	//可能nil
 	return agendaS.storage.QueryMeeting(titleFilter).Front().Value.(Meeting)

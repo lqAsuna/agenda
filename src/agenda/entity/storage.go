@@ -13,6 +13,7 @@ import (
 type Storage struct {
 	userList    list.List
 	meetingList list.List
+	Current     *User
 }
 
 var instance *Storage
@@ -25,9 +26,45 @@ func GetStorage() *Storage {
 		defer mu.Unlock()
 		if instance == nil {
 			instance = &Storage{}
+			instance.Current = &User{}
 		}
 	}
 	return instance
+}
+
+//ReadCurUsr .
+func (sto *Storage) ReadCurUsr(filename string) error {
+	bytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("ReadFile: ", err.Error())
+		return err
+	}
+
+	if err = json.Unmarshal(bytes, sto.Current); err != nil {
+		fmt.Println("ReadFile: ", err.Error())
+		return err
+	}
+
+	fmt.Printf("%v\n", sto.Current)
+
+	return nil
+}
+
+//WriteCurUsr .
+func (sto *Storage) WriteCurUsr(filename string) error {
+	ub, err := json.Marshal(sto.Current)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	file1, err := os.Create(filename)
+	defer file1.Close()
+	if err != nil {
+		fmt.Println(file1, err)
+		return err
+	}
+	file1.Write(ub)
+	return nil
 }
 
 //ReadFromFile .
@@ -162,3 +199,10 @@ func (sto *Storage) ContainUser(user string) bool {
 	}
 	return false
 }*/
+
+//PrintMU .
+func (sto *Storage) PrintMU() {
+	for e := sto.meetingList.Front(); e != nil; e = e.Next() {
+		fmt.Println(e.Value.(Meeting))
+	}
+}

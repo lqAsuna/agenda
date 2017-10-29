@@ -15,6 +15,7 @@
 package cmd
 
 import (
+	"agenda/entity"
 	"fmt"
 	"os"
 
@@ -24,6 +25,10 @@ import (
 )
 
 var cfgFile string
+var (
+	//AgendaS >
+	AgendaS = entity.GetAgendaService()
+)
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
@@ -43,10 +48,14 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	entity.GetStorage().ReadFromFile("entity/usr.json", "entity/meeting.json")
+	entity.GetStorage().ReadCurUsr("entity/curUser.txt")
 	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
+	entity.GetStorage().WirteToFile("entity/usr.json", "entity/meeting.json")
 }
 
 func init() {
@@ -60,6 +69,7 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
 }
 
 // initConfig reads in config file and ENV variables if set.

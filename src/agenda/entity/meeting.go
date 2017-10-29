@@ -13,6 +13,20 @@ type Meeting struct {
 	Title         string
 }
 
+//GetMeeting .
+func GetMeeting(sp string, ptor []string, sd, ed, tl string) Meeting {
+	mt := Meeting{}
+	mt.Sponsor = sp
+	mt.Participators = ptor
+	sdt, _ := time.Parse("2006-01-02 15:04", sd)
+	edt, _ := time.Parse("2006-01-02 15:04", ed)
+	mt.StartDate = sdt
+	mt.EndDate = edt
+	mt.Title = tl
+
+	return mt
+}
+
 //GetSponsor .
 func (m *Meeting) GetSponsor() string {
 	return m.Sponsor
