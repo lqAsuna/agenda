@@ -45,8 +45,6 @@ func (sto *Storage) ReadCurUsr(filename string) error {
 		return err
 	}
 
-	fmt.Printf("%v\n", sto.Current)
-
 	return nil
 }
 
