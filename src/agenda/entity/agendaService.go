@@ -32,6 +32,54 @@ func (agendaS *AgendaService) GetAgendaServiceStorage() *Storage {
 	return agendaS.storage
 }
 
+//UserLogIn
+func (agendaS *AgendaService) UserLogIn(user User) bool {
+	filter := func(ur User) bool {
+		return ur.GetName() == user.GetName()
+	}
+	if agendaS.storage.QueryUser(filter).size() <= 0 {
+		return false
+	}
+	return true
+}	
+
+//UserRegister
+func (agendaS *AgendaService) UserRegister(user User) bool {
+	nameFilter := func(ur User) bool {
+		return ur.GetName() == user.GetName()
+	}
+	if agendaS.storage.QueryUser(filter).size() > 0 {
+		return false
+	}
+	agendaS.storage.CreateMeeting(user)
+	return true
+}
+
+// DeleteUser(By name and password)
+func (agendaS *AgendaService) DeleteUser(N string, P string) bool {
+	filter := func(ur User) bool {
+		return N == ur.GetName() && P == ur.GetPassword()
+	}
+	return agendaS.storage.DeleteUser(filter) > 0
+}
+
+//ListAllUsers
+func (agendaS *AgendaService) QueryAllUsers() *list.List {
+	filter := func(ur User) bool {
+		return true
+	}
+	return agendaS.storage.QueryUser(filter)
+}
+
+func (agendaS *AgendaService) QueryMeetingByUserAndTime(meeting Meeting) *list.List {
+	timeAndUserFilter := func(mt Meeting) bool {
+		return (mt.ContainParticipator(meeting.Sponsor) && mt.StartDate.After(meeting.StartDate) && mt.EndDate.Before(meeting.EndDate))
+	}
+
+	return agendaS.storage.QueryMeeting(timeAndUserFilter)
+}
+
+// createMeeting
 func (agendaS *AgendaService) createMeeting(meeting Meeting) bool {
 	titleFilter := func(mt Meeting) bool {
 		return mt.GetTitle() == meeting.GetTitle()
@@ -59,7 +107,6 @@ func (agendaS *AgendaService) createMeeting(meeting Meeting) bool {
 	   if !agendaS.storage.ContainUser(meeting.GetSponsor()) {
 	     return false
 	   }
-
 	   for _, p := range meeting.GetParticipators() {
 	     if !agendaS.storage.ContainUser(p) {
 	       return false
