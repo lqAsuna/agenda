@@ -8,9 +8,9 @@ type User struct {
 	Phone    string
 }
 
-//GetUser
+//GetUser .
 func GetUser(N string, pass string, E string, P string) User {
-	us := User()
+	us := User{}
 	us.Name = N
 	us.Password = pass
 	us.Email = E
@@ -18,42 +18,42 @@ func GetUser(N string, pass string, E string, P string) User {
 	return us
 }
 
-//GetName
+//GetName .
 func (u *User) GetName() string {
 	return u.Name
 }
 
-//SetName
+//SetName .
 func (u *User) SetName(N string) {
 	u.Name = N
 }
 
-//GetPassword
+//GetPassword .
 func (u *User) GetPassword() string {
 	return u.Password
 }
 
-//SetPassword
+//SetPassword .
 func (u *User) SetPassword(P string) {
 	u.Password = P
 }
 
-//GetEmail
+//GetEmail .
 func (u *User) GetEmail() string {
 	return u.Email
 }
 
-//SetEmail
-func (u *User) SetEmail (E string) {
+//SetEmail .
+func (u *User) SetEmail(E string) {
 	u.Email = E
 }
 
-//GetPhone
+//GetPhone .
 func (u *User) GetPhone() string {
 	return u.Phone
 }
 
-//SetName
+//SetPhone .
 func (u *User) SetPhone(Ph string) {
 	u.Phone = Ph
 }

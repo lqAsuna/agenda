@@ -150,9 +150,9 @@ func (sto *Storage) CreateMeeting(meeting Meeting) {
 	sto.meetingList.PushBack(meeting)
 }
 
-//CreateUser
+//CreateUser .
 func (sto *Storage) CreateUser(user User) {
-	sto.userList.PushBack(User)
+	sto.userList.PushBack(user)
 }
 
 //QueryMeeting .
@@ -166,9 +166,9 @@ func (sto *Storage) QueryMeeting(filter func(meeting Meeting) bool) *list.List {
 	return returnList
 }
 
-//QueryUser
+//QueryUser .
 func (sto *Storage) QueryUser(filter func(user User) bool) *list.List {
-	returnList := list.new()
+	returnList := list.New()
 	for e := sto.userList.Front(); e != nil; e = e.Next() {
 		if filter(e.Value.(User)) {
 			returnList.PushBack(e.Value.(User))
@@ -189,7 +189,7 @@ func (sto *Storage) UpdateMeetingByTitle(tl string, meeting Meeting) int {
 	return count
 }
 
-//UpdateUser(By name)
+//UpdateUser .
 func (sto *Storage) UpdateUser(N string, user User) int {
 	count := 0
 	for ur := sto.userList.Front(); ur != nil; ur = ur.Next() {
@@ -215,7 +215,7 @@ func (sto *Storage) DeleteMeeting(filter func(meeting Meeting) bool) int {
 	return count
 }
 
-//DeleteUser
+//DeleteUser .
 func (sto *Storage) DeleteUser(filter func(user User) bool) int {
 	count := 0
 	var next *list.Element
@@ -228,6 +228,7 @@ func (sto *Storage) DeleteUser(filter func(user User) bool) int {
 	}
 	return count
 }
+
 /*
 //ContainUser .
 func (sto *Storage) ContainUser(user string) bool {

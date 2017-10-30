@@ -21,8 +21,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var registerCmd = &cobra.Command {
-	Use:   "qm",
+var registerCmd = &cobra.Command{
+	Use:   "register",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -36,20 +36,20 @@ to quickly create a Cobra application.`,
 		phone, _ := cmd.Flags().GetString("phone")
 		ur := entity.GetUser(name, password, email, phone)
 		if AgendaS.UserRegister(ur) == true {
-			fmt.Printf("Regist Succeed!")
+			fmt.Printf("Regist Succeed!\n")
 		} else {
-			fmt.Printf("Regist Failed!")
+			fmt.Printf("Regist Failed!\n")
 		}
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(userloginCmd)
-	registerCmd.Flag().StringP("name", "n", "Anonymous", "提供用户名字")
-	registerCmd.Flag().StringP("password", "p", "Anonymous", "提供用户密码")
-	registerCmd.Flag().StringP("email", "e", "Anonymous", "提供用户邮箱地址")
-	registerCmd.Flag().StringP("phone", "o", "Anonymous", "提供用户手机号码")
-		// Here you will define your flags and configuration settings.
+	RootCmd.AddCommand(registerCmd)
+	registerCmd.Flags().StringP("name", "n", "Anonymous", "提供用户名字")
+	registerCmd.Flags().StringP("password", "p", "Anonymous", "提供用户密码")
+	registerCmd.Flags().StringP("email", "e", "Anonymous", "提供用户邮箱地址")
+	registerCmd.Flags().StringP("phone", "o", "Anonymous", "提供用户手机号码")
+	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:

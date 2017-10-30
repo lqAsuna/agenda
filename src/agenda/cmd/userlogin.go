@@ -8,7 +8,7 @@ import (
 )
 
 var userloginCmd = &cobra.Command {
-	Use:   "qm",
+	Use:   "userlogin",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -17,20 +17,21 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		name, _ := cmd.Flags().GetString("name")
-		password, _ := cmd.Flags.GetString("password")
+		password, _ := cmd.Flags().GetString("password")
 		ur := entity.GetUser(name, password, "", "")
 		if AgendaS.UserLogIn(ur) == true {
-			fmt.Printf("Log In Succeed!")
+			fmt.Printf("Log In Succeed!\n")
+			AgendaS.GetAgendaServiceStorage().WriteCurUsr("entity/curUser.txt")
 		} else {
-			fmt.Printf("Log In Failed!")
+			fmt.Printf("Log In Failed!\n")
 		}
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(userloginCmd)
-	userloginCmd.Flag().StringP("name", "n", "Anonymous", "提供用户名字")
-	userloginCmd.Flag().StringP("password", "p", "Anonymous", "提供用户密码")
+	userloginCmd.Flags().StringP("name", "n", "Anonymous", "提供用户名字")
+	userloginCmd.Flags().StringP("password", "p", "Anonymous", "提供用户密码")
 		// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

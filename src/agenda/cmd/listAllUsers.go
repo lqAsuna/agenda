@@ -1,12 +1,15 @@
 package cmd
 
 import (
+	"agenda/entity"
+	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
 // dmCmd represents the dm command
 var listAllUsersCmd = &cobra.Command{
-	Use:   "dm",
+	Use:   "listAllUsers",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -19,15 +22,13 @@ to quickly create a Cobra application.`,
 			tur := e.Value.(entity.User)
 			fmt.Printf("Name: %v\n", tur.Name)
 			fmt.Printf("Email: %v\n", tur.Email)
-			fmt.Printf("Phone: %v\n", tur.Phone)
+			fmt.Printf("Phone: %v\n\n", tur.Phone)
 		}
 	},
 }
 
-
 func init() {
-	RootCmd.AddCommand(dmCmd)
-
+	RootCmd.AddCommand(listAllUsersCmd)
 
 	// Here you will define your flags and configuration settings.
 

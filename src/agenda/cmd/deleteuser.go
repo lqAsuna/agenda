@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
 // dmCmd represents the dm command
 var deleteuserCmd = &cobra.Command{
-	Use:   "dm",
+	Use:   "deleteuser",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -25,10 +27,10 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	RootCmd.AddCommand(dmCmd)
+	RootCmd.AddCommand(deleteuserCmd)
 
 	deleteuserCmd.Flags().StringP("name", "n", "Anonymous", "提供用户名字")
-	deleteuserCmd.Flags().StringP("password", "n", "Anonymous", "提供用户密码")
+	deleteuserCmd.Flags().StringP("password", "p", "Anonymous", "提供用户密码")
 
 	// Here you will define your flags and configuration settings.
 
