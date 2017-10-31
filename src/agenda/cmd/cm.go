@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"agenda/entity"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -38,9 +39,12 @@ to quickly create a Cobra application.`,
 		endDate, _ := cmd.Flags().GetString("endDate")
 
 		mt := entity.GetMeeting(AgendaS.GetAgendaServiceStorage().Current.Name, participators, startDate, endDate, title)
-		AgendaS.GetAgendaServiceStorage().CreateMeeting(mt)
+		if AgendaS.CreateMeeting(mt) {
+			fmt.Printf("creating meeting succeed\n")
+		} else {
+			fmt.Printf("creating meeting failed\n")
+		}
 
-		AgendaS.GetAgendaServiceStorage().PrintMU()
 	},
 }
 

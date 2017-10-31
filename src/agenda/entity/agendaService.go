@@ -78,8 +78,8 @@ func (agendaS *AgendaService) QueryAllUsers() *list.List {
 	return agendaS.storage.QueryUser(filter)
 }
 
-// createMeeting
-func (agendaS *AgendaService) createMeeting(meeting Meeting) bool {
+// CreateMeeting .
+func (agendaS *AgendaService) CreateMeeting(meeting Meeting) bool {
 	titleFilter := func(mt Meeting) bool {
 		return mt.GetTitle() == meeting.GetTitle()
 	}
@@ -102,15 +102,14 @@ func (agendaS *AgendaService) createMeeting(meeting Meeting) bool {
 		return false
 	}
 
-	/*
-	   if !agendaS.storage.ContainUser(meeting.GetSponsor()) {
-	     return false
-	   }
-	   for _, p := range meeting.GetParticipators() {
-	     if !agendaS.storage.ContainUser(p) {
-	       return false
-	     }
-	   }*/
+	if !agendaS.storage.ContainUser(meeting.GetSponsor()) {
+		return false
+	}
+	for _, p := range meeting.GetParticipators() {
+		if !agendaS.storage.ContainUser(p) {
+			return false
+		}
+	}
 
 	agendaS.storage.CreateMeeting(meeting)
 	return true

@@ -229,7 +229,6 @@ func (sto *Storage) DeleteUser(filter func(user User) bool) int {
 	return count
 }
 
-/*
 //ContainUser .
 func (sto *Storage) ContainUser(user string) bool {
 	for u := sto.userList.Front(); u != nil; u = u.Next() {
@@ -238,7 +237,7 @@ func (sto *Storage) ContainUser(user string) bool {
 		}
 	}
 	return false
-}*/
+}
 
 //PrintMU .
 func (sto *Storage) PrintMU() {

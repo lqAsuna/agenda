@@ -19,9 +19,9 @@ to quickly create a Cobra application.`,
 		name, _ := cmd.Flags().GetString("name")
 		password, _ := cmd.Flags().GetString("password")
 		if AgendaS.DeleteUser(name, password) == true {
-			fmt.Printf("Delete succeed!")
+			fmt.Printf("Delete succeed!\n")
 		} else {
-			fmt.Printf("Delete failed!")
+			fmt.Printf("Delete failed!\n")
 		}
 	},
 }
