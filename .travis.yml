@@ -2,6 +2,7 @@ language: go
 
 go:
   - tip # The latest version of Go.
-go_import_path:
-  - agenda/entity
-  - agenda/cmd
+matrix:
+  allow_failures:
+    - go: tip
+  fast_finish: true
