@@ -2,5 +2,6 @@ language: go
 
 go:
   - tip # The latest version of Go.
-go_import_path: agenda/entity
-go_import_path: agenda/cmd
+go_import_path:
+  - agenda/entity
+  - agenda/cmd
